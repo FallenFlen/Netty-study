@@ -7,9 +7,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class MyNettyServer {
     public static void main(String[] args) {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -34,7 +32,8 @@ public class MyNettyServer {
 
             channelFuture.channel().closeFuture().sync(); // 异步关闭,对关闭通道进行监听（即有关闭事件时才会触发真正的关闭）
         } catch (Throwable throwable) {
-            log.error("start server failed:", throwable);
+            throwable.printStackTrace();
+        } finally {
             // 真关闭，优雅关闭
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();

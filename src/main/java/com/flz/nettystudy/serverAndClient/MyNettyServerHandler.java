@@ -5,13 +5,16 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
-import lombok.extern.slf4j.Slf4j;
 
 import java.net.SocketAddress;
 import java.nio.charset.StandardCharsets;
 
-@Slf4j
 public class MyNettyServerHandler extends ChannelInboundHandlerAdapter {
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("server is ready!");
+    }
+
     /**
      * 处理读取事件
      *
@@ -23,7 +26,7 @@ public class MyNettyServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         SocketAddress clientAddress = ctx.channel().remoteAddress();
         ByteBuf message = (ByteBuf) msg;
-        log.info("receive message from client ip:{},content:{}", clientAddress, message.toString(CharsetUtil.UTF_8));
+        System.out.println("receive message from client ip:" + clientAddress + ",content:" + message.toString(CharsetUtil.UTF_8));
     }
 
     /**
@@ -47,6 +50,7 @@ public class MyNettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         // 出现异常将通道关闭即可
+        cause.printStackTrace();
         ctx.close();
     }
 }
