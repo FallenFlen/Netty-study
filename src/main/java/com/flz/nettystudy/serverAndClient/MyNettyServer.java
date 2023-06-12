@@ -28,7 +28,11 @@ public class MyNettyServer {
                         }
                     });
 
-            ChannelFuture channelFuture = serverBootstrap.bind(6668).sync(); // 异步绑定端口并启动
+            ChannelFuture channelFuture = serverBootstrap.bind(6668).sync().addListener(future -> {
+                if (future.isSuccess()) {
+                    System.out.println("server stared!");
+                }
+            }); // 异步绑定端口并启动
 
             channelFuture.channel().closeFuture().sync(); // 异步关闭,对关闭通道进行监听（即有关闭事件时才会触发真正的关闭）
         } catch (Throwable throwable) {

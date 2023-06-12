@@ -8,6 +8,7 @@ import io.netty.util.CharsetUtil;
 
 import java.net.SocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 
 public class MyNettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
@@ -26,6 +27,27 @@ public class MyNettyServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         SocketAddress clientAddress = ctx.channel().remoteAddress();
         ByteBuf message = (ByteBuf) msg;
+        // 提交异步任务到eventloop的任务队列中
+        ctx.channel().eventLoop().execute(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(5L);
+                ctx.channel().writeAndFlush(Unpooled.copiedBuffer("hello,async response 1 with 5 seconds".getBytes(StandardCharsets.UTF_8)));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        ctx.channel().eventLoop().execute(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(10L);
+                ctx.channel().writeAndFlush(Unpooled.copiedBuffer("hello,async response 2 with 10 seconds".getBytes(StandardCharsets.UTF_8)));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        // 提交定时任务
+        ctx.channel().eventLoop().schedule(() -> {
+            ctx.channel().writeAndFlush(Unpooled.copiedBuffer("hello,schedule response with 5 seconds per".getBytes(StandardCharsets.UTF_8)));
+        }, 5, TimeUnit.SECONDS);
         System.out.println("receive message from client ip:" + clientAddress + ",content:" + message.toString(CharsetUtil.UTF_8));
     }
 
