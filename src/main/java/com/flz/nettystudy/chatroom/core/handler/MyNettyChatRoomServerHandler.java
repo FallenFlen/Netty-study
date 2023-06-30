@@ -54,7 +54,7 @@ public class MyNettyChatRoomServerHandler extends SimpleChannelInboundHandler<St
         String currentTimeStr = DateUtils.getCurrentTimeStr();
         SocketAddress remoteAddress = currentChannel.remoteAddress();
         // 消息回显给客户端
-        responseToSelfMsg(currentChannel, msg, currentTimeStr);
+        responseMsgToSelf(currentChannel, msg, currentTimeStr);
         // 消息转发
         transferChatMsg(currentChannel, currentTimeStr, remoteAddress, msg);
         // 服务器本地显示
@@ -75,7 +75,7 @@ public class MyNettyChatRoomServerHandler extends SimpleChannelInboundHandler<St
         return msg.startsWith("#") && msg.lastIndexOf(" ") >= 0;
     }
 
-    private void responseToSelfMsg(Channel currentChannel, String msg, String currentTimeStr) {
+    private void responseMsgToSelf(Channel currentChannel, String msg, String currentTimeStr) {
         if (!isPrivateChat(msg)) {
             currentChannel.writeAndFlush(String.format("%s 你发送了消息：%s", currentTimeStr, msg));
             return;
