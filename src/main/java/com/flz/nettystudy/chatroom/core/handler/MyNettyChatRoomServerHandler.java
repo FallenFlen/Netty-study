@@ -67,8 +67,8 @@ public class MyNettyChatRoomServerHandler extends SimpleChannelInboundHandler<St
             return;
         }
 
-        String[] splitMsgArr = splitMsg(msg);
-        System.out.printf("%s 收到来自客户端%s-客户端%s的私聊消息：%s", currentTimeStr, remoteAddress, splitMsgArr[0], msg);
+        String[] splitResult = splitMsg(msg);
+        System.out.printf("%s 收到来自客户端%s-客户端%s的私聊消息：%s", currentTimeStr, remoteAddress, splitResult[0], msg);
     }
 
     private boolean isPrivateChat(String msg) {
@@ -81,8 +81,8 @@ public class MyNettyChatRoomServerHandler extends SimpleChannelInboundHandler<St
             return;
         }
 
-        String[] splitMsgArr = splitMsg(msg);
-        currentChannel.writeAndFlush(String.format("%s 你给%s发送了私聊消息：%s", currentTimeStr, splitMsgArr[0], splitMsgArr[1]));
+        String[] splitResult = splitMsg(msg);
+        currentChannel.writeAndFlush(String.format("%s 你给%s发送了私聊消息：%s", currentTimeStr, splitResult[0], splitResult[1]));
     }
 
     private String[] splitMsg(String msg) {
@@ -103,9 +103,9 @@ public class MyNettyChatRoomServerHandler extends SimpleChannelInboundHandler<St
             return;
         }
 
-        String[] splitMsgArr = splitMsg(msg);
-        Optional.ofNullable(CHANNEL_MAP.get(splitMsgArr[0]))
-                .orElseThrow(() -> new RuntimeException("Target channel not found with use key:" + splitMsgArr[0]))
-                .writeAndFlush(String.format("%s %s向你发送了消息：%s", currentTimeStr, remoteAddress, splitMsgArr[1]));
+        String[] splitResult = splitMsg(msg);
+        Optional.ofNullable(CHANNEL_MAP.get(splitResult[0]))
+                .orElseThrow(() -> new RuntimeException("Target channel not found with use key:" + splitResult[0]))
+                .writeAndFlush(String.format("%s %s向你发送了消息：%s", currentTimeStr, remoteAddress, splitResult[1]));
     }
 }
