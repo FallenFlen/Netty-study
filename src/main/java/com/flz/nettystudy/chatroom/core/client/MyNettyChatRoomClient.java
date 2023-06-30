@@ -2,7 +2,7 @@ package com.flz.nettystudy.chatroom.core.client;
 
 import com.flz.nettystudy.chatroom.core.config.MyNettyChatRoomClientInitializer;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
@@ -23,7 +23,7 @@ public class MyNettyChatRoomClient {
 
     public void start() throws InterruptedException {
         try {
-            Channel channel = this.bootstrap.group(this.group)
+            ChannelFuture channelFuture = this.bootstrap.group(this.group)
                     .channel(NioSocketChannel.class)
                     .handler(new MyNettyChatRoomClientInitializer())
                     .connect(this.host, this.port)
@@ -32,20 +32,12 @@ public class MyNettyChatRoomClient {
                         if (future.isSuccess()) {
                             System.out.println("客户端启动成功");
                         }
-                    })
-                    .channel();
-            channel.closeFuture()
-                    .sync()
-                    .addListener(future -> {
-                        if (future.isSuccess()) {
-                            System.out.println("客户端已关闭");
-                        }
                     });
 
             Scanner scanner = new Scanner(System.in);
             while (scanner.hasNext()) {
                 String msg = scanner.nextLine();
-                channel.writeAndFlush(msg);
+                channelFuture.channel().writeAndFlush(msg + "\r\n");
             }
         } catch (Throwable throwable) {
             System.out.println("客户端启动失败");
