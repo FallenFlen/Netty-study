@@ -9,9 +9,13 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.net.SocketAddress;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MyNettyChatRoomServerHandler extends SimpleChannelInboundHandler<String> {
     private static final ChannelGroup CHANNEL_GROUP = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    private static final Map<String, Channel> CHANNEL_MAP = new ConcurrentHashMap<>();
 
     // 上线通知给其他客户端
     @Override
@@ -27,6 +31,8 @@ public class MyNettyChatRoomServerHandler extends SimpleChannelInboundHandler<St
         channel.writeAndFlush(String.format("%s 你已加入成功", currentTimeStr));
         // 服务器本地显示
         System.out.println(serverMessage);
+        // 维护channel map
+        CHANNEL_MAP.put(channel.remoteAddress().toString(), channel);
     }
 
     // 离线通知给其他客户端
@@ -38,6 +44,8 @@ public class MyNettyChatRoomServerHandler extends SimpleChannelInboundHandler<St
         CHANNEL_GROUP.writeAndFlush(serverMessage);
         // 服务器本地显示
         System.out.println(serverMessage);
+        // 维护channel map
+        CHANNEL_MAP.remove(channel.remoteAddress().toString());
     }
 
     @Override
@@ -46,15 +54,58 @@ public class MyNettyChatRoomServerHandler extends SimpleChannelInboundHandler<St
         String currentTimeStr = DateUtils.getCurrentTimeStr();
         SocketAddress remoteAddress = currentChannel.remoteAddress();
         // 消息回显给客户端
-        currentChannel.writeAndFlush(String.format("%s 你发送了消息：%s", currentTimeStr, msg));
-
+        responseToSelfMsg(currentChannel, msg, currentTimeStr);
         // 消息转发
-        CHANNEL_GROUP.forEach(channel -> {
-            if (currentChannel != channel) {
-                channel.writeAndFlush(String.format("%s 客户端 %s 发送了消息：%s", currentTimeStr, remoteAddress, msg));
-            }
-        });
+        transferChatMsg(currentChannel, currentTimeStr, remoteAddress, msg);
+        // 服务器本地显示
+        displayInServerLocally(msg, currentTimeStr, remoteAddress);
+    }
 
-        System.out.printf("%s 收到来自客户端 %s 的消息：%s", currentTimeStr, remoteAddress, msg);
+    private void displayInServerLocally(String msg, String currentTimeStr, SocketAddress remoteAddress) {
+        if (!isPrivateChat(msg)) {
+            System.out.printf("%s 收到来自客户端 %s 的消息：%s", currentTimeStr, remoteAddress, msg);
+            return;
+        }
+
+        String[] splitMsgArr = splitMsg(msg);
+        System.out.printf("%s 收到来自客户端%s-客户端%s的私聊消息：%s", currentTimeStr, remoteAddress, splitMsgArr[0], msg);
+    }
+
+    private boolean isPrivateChat(String msg) {
+        return msg.startsWith("#") && msg.lastIndexOf(" ") >= 0;
+    }
+
+    private void responseToSelfMsg(Channel currentChannel, String msg, String currentTimeStr) {
+        if (!isPrivateChat(msg)) {
+            currentChannel.writeAndFlush(String.format("%s 你发送了消息：%s", currentTimeStr, msg));
+            return;
+        }
+
+        String[] splitMsgArr = splitMsg(msg);
+        currentChannel.writeAndFlush(String.format("%s 你给%s发送了私聊消息：%s", currentTimeStr, splitMsgArr[0], splitMsgArr[1]));
+    }
+
+    private String[] splitMsg(String msg) {
+        int contentSplitIndex = msg.lastIndexOf(" ");
+        String userKey = msg.substring(1, contentSplitIndex);
+        String content = msg.substring(contentSplitIndex + 1);
+        return new String[]{userKey, content};
+    }
+
+    private void transferChatMsg(Channel currentChannel, String currentTimeStr, SocketAddress remoteAddress, String msg) {
+        if (!isPrivateChat(msg)) {
+            // 消息转发
+            CHANNEL_GROUP.forEach(channel -> {
+                if (currentChannel != channel) {
+                    channel.writeAndFlush(String.format("%s 客户端 %s 发送了消息：%s", currentTimeStr, remoteAddress, msg));
+                }
+            });
+            return;
+        }
+
+        String[] splitMsgArr = splitMsg(msg);
+        Optional.ofNullable(CHANNEL_MAP.get(splitMsgArr[0]))
+                .orElseThrow(() -> new RuntimeException("Target channel not found with use key:" + splitMsgArr[0]))
+                .writeAndFlush(String.format("%s %s向你发送了消息：%s", currentTimeStr, remoteAddress, splitMsgArr[1]));
     }
 }
