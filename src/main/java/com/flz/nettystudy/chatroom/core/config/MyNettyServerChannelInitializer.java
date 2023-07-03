@@ -7,6 +7,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 
 public class MyNettyServerChannelInitializer extends ChannelInitializer<SocketChannel> {
     @Override
@@ -17,6 +18,8 @@ public class MyNettyServerChannelInitializer extends ChannelInitializer<SocketCh
                 .addLast("myNettyChatRoomServerHandler", new MyNettyChatRoomServerHandler())
                 // netty自带的空闲处理器，检测到空闲之后，会发布IdleStateEvent，并将event传递给下一个handler
                 .addLast("idleStateHandler", new IdleStateHandler(3, 5, 8))
+                .addLast("readTimeoutHandler", new ReadTimeoutHandler(60)) // 如果读空闲时间长达11秒，则触发ReadTimeoutException,
+                // 该异常会委派给下一个handler处理
                 .addLast("myIdleHandler", new MyIdleHandler());
     }
 }
