@@ -32,7 +32,7 @@ public class MyClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("因长时间空闲，连接已断开");
+        System.out.println("因网络原因或长时间空闲，连接已自动断开");
     }
 
     @Override
