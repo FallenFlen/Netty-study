@@ -15,11 +15,11 @@ public class MyNettyServerChannelInitializer extends ChannelInitializer<SocketCh
         socketChannel.pipeline()
                 .addLast("encoder", new StringEncoder())
                 .addLast("decoder", new StringDecoder())
-                .addLast("myNettyChatRoomServerHandler", new MyNettyChatRoomServerHandler())
                 // netty自带的空闲处理器，检测到空闲之后，会发布IdleStateEvent，并将event传递给下一个handler
-                .addLast("idleStateHandler", new IdleStateHandler(5, 5, 10))
+                .addLast("idleStateHandler", new IdleStateHandler(5, 0, 0))
                 .addLast("readTimeoutHandler", new ReadTimeoutHandler(60)) // 如果读空闲时间长达x秒，则触发ReadTimeoutException,
                 // 该异常会委派给下一个handler处理
-                .addLast("myIdleHandler", new MyServerIdleStateHandler());
+                .addLast("myIdleHandler", new MyServerIdleStateHandler())
+                .addLast("myNettyChatRoomServerHandler", new MyNettyChatRoomServerHandler());
     }
 }
