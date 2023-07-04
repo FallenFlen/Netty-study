@@ -1,5 +1,6 @@
 package com.flz.nettystudy.chatroom.core.handler;
 
+import com.flz.nettystudy.common.handler.MyClientHeartBeatHandler;
 import com.flz.nettystudy.utils.DateUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -53,6 +54,10 @@ public class MyNettyChatRoomServerHandler extends SimpleChannelInboundHandler<St
         Channel currentChannel = channelHandlerContext.channel();
         String currentTimeStr = DateUtils.getCurrentTimeStr();
         SocketAddress remoteAddress = currentChannel.remoteAddress();
+        if (isHeartBeat(msg)) {
+            System.out.printf("%s ----收到客户端 %s 的心跳包\n", currentTimeStr, remoteAddress);
+            return;
+        }
         // 消息回显给客户端
         responseMsgToSelf(currentChannel, msg, currentTimeStr);
         // 消息转发
@@ -83,6 +88,10 @@ public class MyNettyChatRoomServerHandler extends SimpleChannelInboundHandler<St
 
         String[] splitResult = splitMsg(msg);
         currentChannel.writeAndFlush(String.format("%s 你给%s发送了私聊消息：%s", currentTimeStr, splitResult[0], splitResult[1]));
+    }
+
+    private boolean isHeartBeat(String msg) {
+        return MyClientHeartBeatHandler.HEART_BEAT.equals(msg);
     }
 
     private String[] splitMsg(String msg) {
