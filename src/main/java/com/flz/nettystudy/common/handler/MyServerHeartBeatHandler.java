@@ -4,9 +4,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.ReadTimeoutException;
-import io.netty.handler.timeout.WriteTimeoutException;
 
-public class MyServerIdleStateHandler extends ChannelInboundHandlerAdapter {
+public class MyServerHeartBeatHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
@@ -31,10 +30,6 @@ public class MyServerIdleStateHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         if (cause instanceof ReadTimeoutException) {
             System.out.println("读超时发生，已终止与客户端的连接");
-        }
-
-        if (cause instanceof WriteTimeoutException) {
-            System.out.println("写超时发生，客户端已主动断开连接");
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.flz.nettystudy.chatroom.core.config;
 
 import com.flz.nettystudy.chatroom.core.handler.MyNettyChatRoomServerHandler;
-import com.flz.nettystudy.common.handler.MyServerIdleStateHandler;
+import com.flz.nettystudy.common.handler.MyServerHeartBeatHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
@@ -19,7 +19,7 @@ public class MyNettyServerChannelInitializer extends ChannelInitializer<SocketCh
                 .addLast("idleStateHandler", new IdleStateHandler(5, 0, 0))
                 .addLast("readTimeoutHandler", new ReadTimeoutHandler(60)) // 如果读空闲时间长达x秒，则触发ReadTimeoutException,
                 // 该异常会委派给下一个handler处理
-                .addLast("myIdleHandler", new MyServerIdleStateHandler())
+                .addLast("myIdleHandler", new MyServerHeartBeatHandler())
                 .addLast("myNettyChatRoomServerHandler", new MyNettyChatRoomServerHandler());
     }
 }
