@@ -2,6 +2,7 @@ package com.flz.nettystudy.chatroom.core.client;
 
 import com.flz.nettystudy.chatroom.core.config.MyNettyChatRoomClientInitializer;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -33,11 +34,15 @@ public class MyNettyChatRoomClient {
                             System.out.println("客户端启动成功");
                         }
                     });
-
+            Channel channel = channelFuture.channel();
             Scanner scanner = new Scanner(System.in);
-            while (scanner.hasNext()) {
+            while (scanner.hasNext() && channel.isActive()) {
                 String msg = scanner.nextLine();
-                channelFuture.channel().writeAndFlush(msg + "\r\n");
+                if (channel.isActive()) {
+                    channel.writeAndFlush(msg + "\r\n");
+                } else {
+                    break;
+                }
             }
         } catch (Throwable throwable) {
             System.out.println("客户端启动失败");

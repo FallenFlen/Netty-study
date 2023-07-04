@@ -31,12 +31,17 @@ public class MyClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("因长时间空闲，连接已断开");
+    }
+
+    @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         if (cause instanceof MyClientDisconnectedException) {
             System.out.println("客户端已断开连接，停止发送心跳包");
             ctx.channel().close();
         } else if (cause instanceof WriteTimeoutException) {
-            System.out.println("客户端发送写超时，已自动断开连接");
+            System.out.println("客户端发生写超时，已自动断开连接");
 //            ctx.channel().close(); 会自动触发channel关闭
         } else {
             super.exceptionCaught(ctx, cause);
