@@ -24,25 +24,21 @@ public class MyNettyChatRoomClient {
         this.port = port;
     }
 
-    public boolean reconnect() {
+    public boolean reconnect() throws InterruptedException {
         int reconnectCount = 0;
-        try {
-            while (reconnectCount < MAX_RECONNECT_TIME) {
-                boolean success = connect();
-                if (success) {
-                    return true;
-                }
+        while (reconnectCount < MAX_RECONNECT_TIME) {
+            try {
+                connect();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
                 TimeUnit.SECONDS.sleep(1L);
                 reconnectCount++;
             }
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
         }
-
         return false;
     }
 
-    public boolean connect() {
+    public void connect() throws InterruptedException {
         this.group = new NioEventLoopGroup();
         this.bootstrap = new Bootstrap();
         try {
@@ -59,15 +55,14 @@ public class MyNettyChatRoomClient {
             this.channel = channelFuture.channel();
             startSending();
             channelFuture.channel().closeFuture().sync();
-            return true;
         } catch (Throwable throwable) {
-            System.out.println("客户端启动失败");
             throwable.printStackTrace();
+            System.out.println("客户端启动失败");
+            connectSuccess = false;
+            throw throwable;
         } finally {
             this.group.shutdownGracefully();
         }
-
-        return false;
     }
 
     private void startSending() {
