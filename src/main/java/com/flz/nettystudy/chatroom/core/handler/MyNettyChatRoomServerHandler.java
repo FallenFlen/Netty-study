@@ -1,7 +1,7 @@
 package com.flz.nettystudy.chatroom.core.handler;
 
 import com.flz.nettystudy.common.handler.MyClientHeartBeatHandler;
-import com.flz.nettystudy.utils.DateUtils;
+import com.flz.nettystudy.common.utils.DateUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

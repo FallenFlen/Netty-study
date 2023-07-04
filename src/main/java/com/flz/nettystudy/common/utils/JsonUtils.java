@@ -1,4 +1,4 @@
-package com.flz.nettystudy.utils;
+package com.flz.nettystudy.common.utils;
 
 import com.google.gson.Gson;
 import lombok.AccessLevel;

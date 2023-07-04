@@ -1,4 +1,4 @@
-package com.flz.nettystudy.utils;
+package com.flz.nettystudy.common.utils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

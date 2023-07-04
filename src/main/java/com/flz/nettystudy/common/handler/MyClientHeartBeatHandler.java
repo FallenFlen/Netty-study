@@ -1,5 +1,6 @@
 package com.flz.nettystudy.common.handler;
 
+import com.flz.nettystudy.chatroom.core.client.MyNettyChatRoomClient;
 import com.flz.nettystudy.common.exception.MyClientDisconnectedException;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,6 +11,11 @@ import io.netty.handler.timeout.WriteTimeoutException;
 
 public class MyClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
     public static final String HEART_BEAT = "client_heart_beat";
+    private MyNettyChatRoomClient client;
+
+    public MyClientHeartBeatHandler(MyNettyChatRoomClient client) {
+        this.client = client;
+    }
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
@@ -32,7 +38,9 @@ public class MyClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("因网络原因或长时间空闲，连接已自动断开");
+        System.out.println("因网络原因或长时间空闲，连接已自动断开，尝试重连");
+        boolean result = client.reconnect();
+        System.out.println(result ? "重连成功" : "重连失败");
     }
 
     @Override
@@ -44,6 +52,7 @@ public class MyClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
             System.out.println("客户端发生写超时，已自动断开连接");
 //            ctx.channel().close(); 会自动触发channel关闭
         } else {
+            cause.printStackTrace();
             super.exceptionCaught(ctx, cause);
         }
     }
