@@ -27,7 +27,7 @@ public class MyNettyChatRoomClient {
     public boolean reconnect() {
         int reconnectCount = 0;
         try {
-            while (reconnectCount <= MAX_RECONNECT_TIME) {
+            while (reconnectCount < MAX_RECONNECT_TIME) {
                 boolean success = connect();
                 if (success) {
                     return true;
