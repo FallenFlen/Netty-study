@@ -17,6 +17,7 @@ public class MyNettyChatRoomClient {
     private Bootstrap bootstrap;
     private Channel channel;
     public static final int MAX_RECONNECT_TIME = 3;
+    private volatile boolean connectSuccess;
 
     public MyNettyChatRoomClient(String host, int port) {
         this.host = host;
@@ -44,7 +45,6 @@ public class MyNettyChatRoomClient {
     public boolean connect() {
         this.group = new NioEventLoopGroup();
         this.bootstrap = new Bootstrap();
-
         try {
             ChannelFuture channelFuture = this.bootstrap.group(this.group)
                     .channel(NioSocketChannel.class)
@@ -53,7 +53,7 @@ public class MyNettyChatRoomClient {
                     .sync()
                     .addListener(future -> {
                         if (future.isSuccess()) {
-                            System.out.println("客户端启动成功");
+                            connectSuccess = true;
                         }
                     });
             this.channel = channelFuture.channel();
@@ -72,7 +72,14 @@ public class MyNettyChatRoomClient {
 
     private void startSending() {
         Scanner scanner = new Scanner(System.in);
-        while (scanner.hasNext() && channel.isActive()) {
+        boolean isReady = connectSuccess;
+        while (!isReady) {
+            isReady = connectSuccess;
+        }
+
+        System.out.println("准备就绪，可以发送消息了");
+
+        while (connectSuccess && scanner.hasNext() && channel.isActive()) {
             String msg = scanner.nextLine();
             if (channel.isActive()) {
                 channel.writeAndFlush(msg + "\r\n");
@@ -80,6 +87,7 @@ public class MyNettyChatRoomClient {
                 break;
             }
         }
+
         System.out.println("Stop sending message");
     }
 }
