@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.handler.timeout.WriteTimeoutException;
 
 public class MyClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
     public static final String HEART_BEAT = "client_heart_beat";
@@ -34,6 +35,9 @@ public class MyClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
         if (cause instanceof MyClientDisconnectedException) {
             System.out.println("客户端已断开连接，停止发送心跳包");
             ctx.channel().close();
+        } else if (cause instanceof WriteTimeoutException) {
+            System.out.println("客户端发送写超时，已自动断开连接");
+//            ctx.channel().close(); 会自动触发channel关闭
         } else {
             super.exceptionCaught(ctx, cause);
         }
