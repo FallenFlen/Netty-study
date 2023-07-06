@@ -18,7 +18,9 @@ public class WebsocketServerInitializer extends ChannelInitializer<SocketChannel
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         socketChannel.pipeline()
                 .addLast(new HttpServerCodec())
+                // http请求聚合处理器
                 .addLast(new HttpObjectAggregator(8192))
+                // 大数据传输分块处理，防止大数据导致oom
                 .addLast(new ChunkedWriteHandler())
                 // 服务器根路径
                 .addLast(new WebSocketServerProtocolHandler(endpoint, null, true))
