@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+// 生成的类所在的包
+package proto;
+
+option java_multiple_files = true;
+option java_outer_classname = "StudentProto";
+
+// message代表消息体
+message Student{
+  int32 id = 1; // 数字代表编号，
+  string name = 2;
+}
