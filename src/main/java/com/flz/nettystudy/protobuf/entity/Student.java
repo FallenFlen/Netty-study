@@ -30,6 +30,10 @@ private static final long serialVersionUID = 0L;
     return new Student();
   }
 
+  public String getInfo() {
+    return String.format("-", id_, name_);
+  }
+
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return StudentProto.internal_static_com_flz_nettystudy_protobuf_entity_Student_descriptor;
