@@ -32,8 +32,8 @@ public class ProtobufServer {
                     .childHandler(new ChannelInitializer<>() {
                         @Override
                         protected void initChannel(Channel channel) {
-                            channel.pipeline().addLast(new ProtobufEncoder());
                             channel.pipeline().addLast(new ProtobufDecoder(Student.getDefaultInstance()));
+                            channel.pipeline().addLast(new ProtobufEncoder());
                             channel.pipeline().addLast(new ProtobufServerHandler());
                         }
                     })

@@ -10,7 +10,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 
-import java.util.Random;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -34,8 +33,8 @@ public class ProtobufClient {
                     .handler(new ChannelInitializer<>() {
                         @Override
                         protected void initChannel(Channel channel) throws Exception {
-                            channel.pipeline().addLast(new ProtobufEncoder());
                             channel.pipeline().addLast(new ProtobufDecoder(Student.getDefaultInstance()));
+                            channel.pipeline().addLast(new ProtobufEncoder());
                             channel.pipeline().addLast(new ProtobufClientHandler());
                         }
                     })
@@ -47,7 +46,6 @@ public class ProtobufClient {
                         }
                     });
             Scanner scanner = new Scanner(System.in);
-            Random random = new Random();
             while (scanner.hasNext()) {
                 String name = scanner.nextLine();
                 Student student = Student.newBuilder()

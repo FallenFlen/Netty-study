@@ -296,7 +296,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public String getInfo() {
-    return String.format("-", id_, name_);
+    return String.format("%s-%s", getId(), getName());
   }
 
   /**
