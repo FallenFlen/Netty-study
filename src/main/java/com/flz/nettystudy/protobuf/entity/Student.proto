@@ -8,6 +8,6 @@ option java_outer_classname = "StudentProto";
 
 // message代表消息体
 message Student{
-  int32 id = 1; // 数字代表编号，
+  int32 id = 1; // 数字代表唯一标签
   string name = 2;
 }
