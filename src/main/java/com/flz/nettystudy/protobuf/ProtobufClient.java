@@ -12,6 +12,7 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class ProtobufClient {
     private String host;
@@ -50,7 +51,7 @@ public class ProtobufClient {
             while (scanner.hasNext()) {
                 String name = scanner.nextLine();
                 Student student = Student.newBuilder()
-                        .setId(random.nextInt(10000))
+                        .setId(UUID.randomUUID().toString().replace("-", ""))
                         .setName(name)
                         .build();
                 channelFuture.channel().writeAndFlush(student);

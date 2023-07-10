@@ -4,10 +4,10 @@ syntax = "proto3";
 package proto;
 
 option java_multiple_files = true;
-option java_outer_classname = "StudentProto";
+option java_outer_classname = "StudentMessage";
 
 // message代表消息体
 message Student{
-  int32 id = 1; // 数字代表唯一标签
+  string id = 1; // 数字代表唯一标签
   string name = 2;
 }
