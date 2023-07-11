@@ -8,7 +8,9 @@ public class BoundClientHandler extends SimpleChannelInboundHandler<Long> {
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Long aLong) throws Exception {
         System.out.println("[BoundClientHandler] received from server:" + aLong);
         // 给客户端响应数据
-        channelHandlerContext.channel().writeAndFlush(aLong * 2);
+        long responseData = aLong * 2;
+        System.out.println("[BoundClientHandler] response to server:" + responseData);
+        channelHandlerContext.channel().writeAndFlush(responseData);
     }
 
 }
