@@ -20,8 +20,8 @@ public abstract class BaseServer {
         try {
             doStart();
         } catch (Throwable throwable) {
-            throwable.printStackTrace();
             System.out.println("[NettyServer] error occurred when starting server");
+            throwable.printStackTrace();
         } finally {
             this.workerGroup.shutdownGracefully();
             this.boosGroup.shutdownGracefully();
