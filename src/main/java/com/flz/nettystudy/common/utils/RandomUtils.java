@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
 import java.util.Random;
+import java.util.UUID;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RandomUtils {
@@ -21,4 +22,7 @@ public class RandomUtils {
         return RANDOM.nextLong();
     }
 
+    public static String randomUUID() {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
 }

@@ -14,4 +14,8 @@ public class UnpackingAndStickingServer extends AbstractCommonCustomServer {
     public String getEndpointDescription() {
         return "UnpackingAndStickingServer";
     }
+
+    public static void main(String[] args) {
+        new UnpackingAndStickingServer(9968, new UnpackingAndStickingServerChannelInitializer()).start();
+    }
 }
