@@ -16,7 +16,7 @@ public class UnpackingAndStickingClient extends AbstractCommonCustomClient {
         return "UnpackingAndStickingClient";
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Throwable {
         new UnpackingAndStickingClient("127.0.0.1", 9968, new UnpackingAndStickingClientChannelInitializer())
                 .connect();
     }

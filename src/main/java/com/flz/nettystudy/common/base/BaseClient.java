@@ -15,7 +15,7 @@ public abstract class BaseClient {
         this.port = port;
     }
 
-    public void connect() {
+    public void connect() throws Throwable {
         this.group = new NioEventLoopGroup();
         this.bootstrap = new Bootstrap();
         try {
@@ -24,6 +24,7 @@ public abstract class BaseClient {
         } catch (Throwable throwable) {
             System.out.println("[NettyClient] connected failed");
             throwable.printStackTrace();
+            throw throwable;
         } finally {
             this.group.shutdownGracefully();
         }

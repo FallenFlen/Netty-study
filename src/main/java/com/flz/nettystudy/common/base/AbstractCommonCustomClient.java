@@ -26,6 +26,6 @@ public abstract class AbstractCommonCustomClient extends BaseClient implements N
                     }
                 });
 
-        channelFuture.channel().closeFuture().sync();
+//        channelFuture.channel().closeFuture().sync();
     }
 }

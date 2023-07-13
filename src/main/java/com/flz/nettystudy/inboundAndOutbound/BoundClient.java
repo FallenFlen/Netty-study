@@ -25,7 +25,7 @@ public class BoundClient extends BaseClient {
         channelFuture.channel().closeFuture().sync();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Throwable {
         new BoundClient("127.0.0.1", 9967).connect();
     }
 }
