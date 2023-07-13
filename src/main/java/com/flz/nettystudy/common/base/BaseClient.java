@@ -8,6 +8,7 @@ public abstract class BaseClient {
     protected int port;
     protected NioEventLoopGroup group;
     protected Bootstrap bootstrap;
+    protected boolean connected;
 
     public BaseClient(String host, int port) {
         this.host = host;
@@ -19,6 +20,7 @@ public abstract class BaseClient {
         this.bootstrap = new Bootstrap();
         try {
             doConnect();
+            this.connected = true;
         } catch (Throwable throwable) {
             System.out.println("[NettyClient] connected failed");
             throwable.printStackTrace();
@@ -28,4 +30,8 @@ public abstract class BaseClient {
     }
 
     protected abstract void doConnect() throws Throwable;
+
+    public boolean isConnected() {
+        return connected;
+    }
 }
