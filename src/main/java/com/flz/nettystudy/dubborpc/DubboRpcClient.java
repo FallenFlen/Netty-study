@@ -27,6 +27,7 @@ public class DubboRpcClient extends AbstractCommonCustomClient {
                         connect();
                     }
                     // 拼接协议头
+                    System.out.println("2.设置rpc请求参数");
                     this.handler.setParam(messageSeparator + " " + args[0]);
                     return EXECUTOR.submit(this.handler).get();
                 });

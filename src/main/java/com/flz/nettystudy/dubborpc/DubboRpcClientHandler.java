@@ -18,12 +18,14 @@ public class DubboRpcClientHandler extends ChannelInboundHandlerAdapter implemen
     // 1.设置全局ChannelHandlerContext
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("1.设置全局ChannelHandlerContext");
         this.channelHandlerContext = ctx;
     }
 
     // 4.收到服务器响应
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public synchronized void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("4.收到服务器响应");
         result = msg.toString();
         // 拿到响应结果后唤醒被挂起的线程
         notify();
@@ -38,7 +40,8 @@ public class DubboRpcClientHandler extends ChannelInboundHandlerAdapter implemen
 
     // 3.该方法被代理对象调用，携带参数执行真正的rpc请求
     @Override
-    public String call() throws Exception {
+    public synchronized String call() throws Exception {
+        System.out.println("3.该方法被代理对象调用，携带参数执行真正的rpc请求");
         // 请求
         channelHandlerContext.writeAndFlush(param);
         // 请求完之后挂起当前线程，等待结果到来后被唤醒
