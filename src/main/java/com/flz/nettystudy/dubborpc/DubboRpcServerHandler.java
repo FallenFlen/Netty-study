@@ -20,7 +20,7 @@ public class DubboRpcServerHandler extends ChannelInboundHandlerAdapter {
             return;
         }
 
-        String response = helloRpcService.hello(message);
+        String response = helloRpcService.hello(message.substring(RpcConstant.MESSAGE_SEPARATOR.length()));
         ctx.writeAndFlush(response);
     }
 
