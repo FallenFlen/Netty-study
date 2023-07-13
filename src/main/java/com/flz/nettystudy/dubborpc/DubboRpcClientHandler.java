@@ -28,7 +28,7 @@ public class DubboRpcClientHandler extends ChannelInboundHandlerAdapter implemen
         System.out.println("4.收到服务器响应");
         result = msg.toString();
         // 拿到响应结果后唤醒被挂起的线程
-        notify();
+        notifyAll();
     }
 
     @Override
@@ -43,7 +43,7 @@ public class DubboRpcClientHandler extends ChannelInboundHandlerAdapter implemen
     public synchronized String call() throws Exception {
         System.out.println("3.该方法被代理对象调用，携带参数执行真正的rpc请求");
         // 请求
-        channelHandlerContext.writeAndFlush(param);
+        channelHandlerContext.channel().writeAndFlush(param);
         // 请求完之后挂起当前线程，等待结果到来后被唤醒
         wait();
         // 此时拿到结果了，返回
