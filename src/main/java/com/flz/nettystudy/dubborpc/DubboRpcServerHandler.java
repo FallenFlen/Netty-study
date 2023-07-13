@@ -30,4 +30,9 @@ public class DubboRpcServerHandler extends ChannelInboundHandlerAdapter {
         cause.printStackTrace();
         ctx.close();
     }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("客户端" + ctx.channel().remoteAddress() + "加入了");
+    }
 }
