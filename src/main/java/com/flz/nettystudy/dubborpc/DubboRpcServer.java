@@ -15,6 +15,6 @@ public class DubboRpcServer extends AbstractCommonCustomServer {
     }
 
     public static void main(String[] args) {
-        new DubboRpcServer(9969, null).start();
+        new DubboRpcServer(9969, new DubboRpcServerInitializer()).start();
     }
 }
