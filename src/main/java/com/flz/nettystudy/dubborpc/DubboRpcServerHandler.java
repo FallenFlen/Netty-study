@@ -23,4 +23,11 @@ public class DubboRpcServerHandler extends ChannelInboundHandlerAdapter {
         String response = helloRpcService.hello(message);
         ctx.writeAndFlush(response);
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        System.out.println("服务器端发生异常!");
+        cause.printStackTrace();
+        ctx.close();
+    }
 }
