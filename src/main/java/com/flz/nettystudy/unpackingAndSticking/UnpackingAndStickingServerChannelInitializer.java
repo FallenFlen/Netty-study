@@ -6,6 +6,9 @@ import io.netty.channel.socket.SocketChannel;
 public class UnpackingAndStickingServerChannelInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
-        socketChannel.pipeline().addLast(new UnpackingAndStickingServerHandler());
+        socketChannel.pipeline()
+                .addLast(new UnpackingAndStickingEncoder())
+                .addLast(new UnpackingAndStickingDecoder())
+                .addLast(new UnpackingAndStickingServerHandler());
     }
 }
