@@ -1,9 +1,12 @@
 package com.flz.nettystudy.common.base;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 
 import java.util.Objects;
 
@@ -21,6 +24,12 @@ public abstract class AbstractCommonCustomServer extends BaseServer implements N
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 128)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .handler(new ChannelInitializer<>() {
+                    @Override
+                    protected void initChannel(Channel ch) throws Exception {
+                        ch.pipeline().addLast(new LoggingHandler(LogLevel.INFO));
+                    }
+                })
                 .childHandler(this.channelInitializer)
                 .bind(this.port)
                 .sync()
