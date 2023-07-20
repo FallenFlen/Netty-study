@@ -43,4 +43,8 @@ public abstract class AbstractCommonCustomServer extends BaseServer implements N
                 .sync();
     }
 
+    @Override
+    public String getEndpointDescription() {
+        return getClass().getName();
+    }
 }

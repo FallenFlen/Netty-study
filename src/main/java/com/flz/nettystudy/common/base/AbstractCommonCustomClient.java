@@ -28,4 +28,9 @@ public abstract class AbstractCommonCustomClient extends BaseClient implements N
 
 //        channelFuture.channel().closeFuture().sync();
     }
+
+    @Override
+    public String getEndpointDescription() {
+        return getClass().getName();
+    }
 }
