@@ -21,11 +21,12 @@ public class ProtectionExperimentClientHandler extends SimpleChannelInboundHandl
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("active");
-        ctx.channel().writeAndFlush(Unpooled.copiedBuffer("hello服务器" + RandomUtils.randomUUID(), CharsetUtil.UTF_8));
+        String text = "hello服务器" + RandomUtils.randomUUID();
+        ctx.channel().writeAndFlush(Unpooled.copiedBuffer(text, CharsetUtil.UTF_8));
         ctx.channel().eventLoop().scheduleAtFixedRate(() -> {
-            ByteBuf msg = Unpooled.copiedBuffer("hello服务器" + RandomUtils.randomUUID(), CharsetUtil.UTF_8);
+            ByteBuf msg = Unpooled.copiedBuffer(text, CharsetUtil.UTF_8);
             ctx.channel().writeAndFlush(msg);
+            System.out.println("发送成功");
         }, 0L, 250L, TimeUnit.MILLISECONDS);
 
     }
