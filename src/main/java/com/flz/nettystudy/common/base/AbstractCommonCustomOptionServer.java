@@ -49,6 +49,6 @@ public abstract class AbstractCommonCustomOptionServer extends BaseServer implem
 
     @Override
     public String getEndpointDescription() {
-        return null;
+        return getClass().getName();
     }
 }
