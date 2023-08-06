@@ -1,10 +1,10 @@
 package com.flz.nettystudy.protection;
 
-import com.flz.nettystudy.common.base.AbstractCommonCustomContinuousClient;
+import com.flz.nettystudy.common.base.tcp.AbstractCommonCustomTcpBlockedClient;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
-public class ProtectionExperimentClient extends AbstractCommonCustomContinuousClient {
+public class ProtectionExperimentClient extends AbstractCommonCustomTcpBlockedClient {
 
     public ProtectionExperimentClient(String host, int port, ChannelInitializer<SocketChannel> channelInitializer) {
         super(host, port, channelInitializer);

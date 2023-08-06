@@ -1,14 +1,18 @@
-package com.flz.nettystudy.common.base;
+package com.flz.nettystudy.common.base.tcp;
 
+import com.flz.nettystudy.common.base.NamedEndpoint;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
-public abstract class AbstractCommonCustomClient extends BaseClient implements NamedEndpoint {
+/**
+ * 通用持续性客户端，发完消息不会断开连接
+ */
+public abstract class AbstractCommonCustomTcpBlockedClient extends BaseTcpClient implements NamedEndpoint {
     private ChannelInitializer<SocketChannel> channelInitializer;
 
-    public AbstractCommonCustomClient(String host, int port, ChannelInitializer<SocketChannel> channelInitializer) {
+    public AbstractCommonCustomTcpBlockedClient(String host, int port, ChannelInitializer<SocketChannel> channelInitializer) {
         super(host, port);
         this.channelInitializer = channelInitializer;
     }
@@ -26,7 +30,7 @@ public abstract class AbstractCommonCustomClient extends BaseClient implements N
                     }
                 });
 
-//        channelFuture.channel().closeFuture().sync();
+        channelFuture.channel().closeFuture().sync();
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.flz.nettystudy.inboundAndOutbound;
 
-import com.flz.nettystudy.common.base.BaseServer;
+import com.flz.nettystudy.common.base.tcp.BaseTcpServer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-public class BoundServer extends BaseServer {
+public class BoundServer extends BaseTcpServer {
     public BoundServer(int port) {
         super(port);
     }

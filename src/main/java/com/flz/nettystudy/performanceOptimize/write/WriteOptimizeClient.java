@@ -1,13 +1,13 @@
 package com.flz.nettystudy.performanceOptimize.write;
 
-import com.flz.nettystudy.common.base.AbstractCommonCustomContinuousClient;
+import com.flz.nettystudy.common.base.tcp.AbstractCommonCustomTcpBlockedClient;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class WriteOptimizeClient extends AbstractCommonCustomContinuousClient {
+public class WriteOptimizeClient extends AbstractCommonCustomTcpBlockedClient {
     public WriteOptimizeClient(String host, int port, ChannelInitializer<SocketChannel> channelInitializer) {
         super(host, port, channelInitializer);
     }

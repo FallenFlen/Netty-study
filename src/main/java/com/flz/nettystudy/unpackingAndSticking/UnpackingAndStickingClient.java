@@ -1,10 +1,10 @@
 package com.flz.nettystudy.unpackingAndSticking;
 
-import com.flz.nettystudy.common.base.AbstractCommonCustomClient;
+import com.flz.nettystudy.common.base.tcp.AbstractCommonCustomTcpClient;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
-public class UnpackingAndStickingClient extends AbstractCommonCustomClient {
+public class UnpackingAndStickingClient extends AbstractCommonCustomTcpClient {
 
 
     public UnpackingAndStickingClient(String host, int port, ChannelInitializer<SocketChannel> channelInitializer) {

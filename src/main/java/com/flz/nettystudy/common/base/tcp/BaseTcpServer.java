@@ -1,16 +1,16 @@
-package com.flz.nettystudy.common.base;
+package com.flz.nettystudy.common.base.tcp;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
-public abstract class BaseServer {
+public abstract class BaseTcpServer {
     protected int port;
     protected NioEventLoopGroup boosGroup;
     protected NioEventLoopGroup workerGroup;
     protected ServerBootstrap serverBootstrap;
 
-    protected BaseServer(int port) {
+    protected BaseTcpServer(int port) {
         this.port = port;
         this.boosGroup = new NioEventLoopGroup(new DefaultThreadFactory("boss"));
         this.workerGroup = new NioEventLoopGroup(new DefaultThreadFactory("worker"));

@@ -1,10 +1,10 @@
 package com.flz.nettystudy.inboundAndOutbound;
 
-import com.flz.nettystudy.common.base.BaseClient;
+import com.flz.nettystudy.common.base.tcp.BaseTcpClient;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
-public class BoundClient extends BaseClient {
+public class BoundClient extends BaseTcpClient {
     public BoundClient(String host, int port) {
         super(host, port);
     }

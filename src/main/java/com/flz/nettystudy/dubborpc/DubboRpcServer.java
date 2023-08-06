@@ -1,10 +1,10 @@
 package com.flz.nettystudy.dubborpc;
 
-import com.flz.nettystudy.common.base.AbstractCommonCustomServer;
+import com.flz.nettystudy.common.base.tcp.AbstractCommonCustomTcpServer;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
-public class DubboRpcServer extends AbstractCommonCustomServer {
+public class DubboRpcServer extends AbstractCommonCustomTcpServer {
     protected DubboRpcServer(int port, ChannelInitializer<SocketChannel> channelInitializer) {
         super(port, channelInitializer);
     }

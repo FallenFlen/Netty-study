@@ -1,5 +1,6 @@
-package com.flz.nettystudy.common.base;
+package com.flz.nettystudy.common.base.tcp;
 
+import com.flz.nettystudy.common.base.NamedEndpoint;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -10,10 +11,10 @@ import io.netty.handler.logging.LoggingHandler;
 
 import java.util.Objects;
 
-public abstract class AbstractCommonCustomServer extends BaseServer implements NamedEndpoint {
+public abstract class AbstractCommonCustomTcpServer extends BaseTcpServer implements NamedEndpoint {
     private ChannelInitializer<SocketChannel> channelInitializer;
 
-    protected AbstractCommonCustomServer(int port, ChannelInitializer<SocketChannel> channelInitializer) {
+    protected AbstractCommonCustomTcpServer(int port, ChannelInitializer<SocketChannel> channelInitializer) {
         super(port);
         this.channelInitializer = Objects.requireNonNull(channelInitializer);
     }

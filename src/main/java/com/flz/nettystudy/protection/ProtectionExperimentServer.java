@@ -1,11 +1,11 @@
 package com.flz.nettystudy.protection;
 
-import com.flz.nettystudy.common.base.AbstractCommonCustomOptionServer;
+import com.flz.nettystudy.common.base.tcp.AbstractCommonCustomTcpOptionServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
-public class ProtectionExperimentServer extends AbstractCommonCustomOptionServer {
+public class ProtectionExperimentServer extends AbstractCommonCustomTcpOptionServer {
     protected ProtectionExperimentServer(int port, ChannelInitializer<SocketChannel> channelInitializer) {
         super(port, channelInitializer);
     }

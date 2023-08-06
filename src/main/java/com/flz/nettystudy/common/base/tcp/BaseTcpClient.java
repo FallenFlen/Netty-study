@@ -1,16 +1,16 @@
-package com.flz.nettystudy.common.base;
+package com.flz.nettystudy.common.base.tcp;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.nio.NioEventLoopGroup;
 
-public abstract class BaseClient {
+public abstract class BaseTcpClient {
     protected String host;
     protected int port;
     protected NioEventLoopGroup group;
     protected Bootstrap bootstrap;
     protected boolean connected;
 
-    public BaseClient(String host, int port) {
+    public BaseTcpClient(String host, int port) {
         this.host = host;
         this.port = port;
     }

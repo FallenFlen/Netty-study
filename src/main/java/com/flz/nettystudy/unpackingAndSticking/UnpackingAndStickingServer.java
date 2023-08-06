@@ -1,10 +1,10 @@
 package com.flz.nettystudy.unpackingAndSticking;
 
-import com.flz.nettystudy.common.base.AbstractCommonCustomServer;
+import com.flz.nettystudy.common.base.tcp.AbstractCommonCustomTcpServer;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
-public class UnpackingAndStickingServer extends AbstractCommonCustomServer {
+public class UnpackingAndStickingServer extends AbstractCommonCustomTcpServer {
 
     protected UnpackingAndStickingServer(int port, ChannelInitializer<SocketChannel> channelInitializer) {
         super(port, channelInitializer);
