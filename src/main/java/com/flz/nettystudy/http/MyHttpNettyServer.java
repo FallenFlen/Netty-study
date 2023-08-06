@@ -1,4 +1,4 @@
-package com.flz.nettystudy.httpDemo;
+package com.flz.nettystudy.http;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

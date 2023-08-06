@@ -1,4 +1,4 @@
-package com.flz.nettystudy.httpDemo;
+package com.flz.nettystudy.http;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

@@ -1,4 +1,4 @@
-package com.flz.nettystudy.httpDemo;
+package com.flz.nettystudy.http;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
