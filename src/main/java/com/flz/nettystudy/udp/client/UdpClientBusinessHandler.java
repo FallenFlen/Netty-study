@@ -1,6 +1,5 @@
 package com.flz.nettystudy.udp.client;
 
-import com.flz.nettystudy.common.utils.JsonUtils;
 import com.flz.nettystudy.common.utils.RandomUtils;
 import com.flz.nettystudy.udp.dto.UdpMessage;
 import com.flz.nettystudy.udp.dto.UdpRequest;
@@ -14,23 +13,29 @@ import lombok.extern.slf4j.Slf4j;
 import java.net.InetSocketAddress;
 
 @Slf4j
-public class UdpClientHandler extends SimpleChannelInboundHandler<UdpResponse> {
+public class UdpClientBusinessHandler extends SimpleChannelInboundHandler<UdpResponse> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, UdpResponse msg) throws Exception {
         // receive response
-        log.info("receive full response from server:{}", JsonUtils.silentMarshal(msg));
-        log.info("receive msg in full response from server:{}", msg.getResponseMessage().getContent().toString(CharsetUtil.UTF_8));
+        log.info("receive response from udp server:{}", msg.toDescription());
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        String message = "I am Udp message:" + RandomUtils.randomUUID();
         UdpRequest udpRequest = UdpRequest.builder()
                 .requestMessage(UdpMessage.builder()
-                        .content(Unpooled.copiedBuffer("I am Udp message:" + RandomUtils.randomUUID(), CharsetUtil.UTF_8))
+                        .content(Unpooled.copiedBuffer(message, CharsetUtil.UTF_8))
                         .build())
                 .sender((InetSocketAddress) ctx.channel().remoteAddress())
                 .build();
-        log.info("send udp message to server:{}", JsonUtils.silentMarshal(udpRequest));
+        log.info("send udp message to server:{}", message);
         ctx.channel().writeAndFlush(udpRequest);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        ctx.close();
     }
 }

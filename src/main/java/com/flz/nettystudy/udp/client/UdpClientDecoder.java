@@ -1,6 +1,5 @@
 package com.flz.nettystudy.udp.client;
 
-import com.flz.nettystudy.common.utils.JsonUtils;
 import com.flz.nettystudy.udp.dto.UdpMessage;
 import com.flz.nettystudy.udp.dto.UdpResponse;
 import io.netty.buffer.ByteBuf;
@@ -16,14 +15,16 @@ public class UdpClientDecoder extends MessageToMessageDecoder<DatagramPacket> {
     @Override
     protected void decode(ChannelHandlerContext ctx, DatagramPacket msg, List<Object> out) throws Exception {
         ByteBuf content = msg.content();
+        int length = content.readInt();
+        ByteBuf byteBuf = content.readSlice(length).retain();
         UdpResponse udpResponse = UdpResponse.builder()
                 .sender(msg.sender())
                 .receiver(msg.recipient())
                 .responseMessage(UdpMessage.builder()
-                        .content(content)
+                        .content(byteBuf)
                         .build())
                 .build();
-        log.info("decode DatagramPacket to UdpResponse:{}", JsonUtils.silentMarshal(udpResponse));
+        log.info("decode DatagramPacket to UdpResponse");
         out.add(udpResponse);
     }
 }

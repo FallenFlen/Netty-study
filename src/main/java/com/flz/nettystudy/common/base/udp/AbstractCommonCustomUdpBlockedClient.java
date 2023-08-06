@@ -5,15 +5,14 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.DatagramChannel;
-import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioDatagramChannel;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class AbstractCommonCustomUdpBlockedClient extends BaseUdpClient implements NamedEndpoint {
-    private ChannelInitializer<SocketChannel> channelInitializer;
+    private ChannelInitializer<NioDatagramChannel> channelInitializer;
 
-    protected AbstractCommonCustomUdpBlockedClient(String host, int port, ChannelInitializer<SocketChannel> channelInitializer) {
+    protected AbstractCommonCustomUdpBlockedClient(String host, int port, ChannelInitializer<NioDatagramChannel> channelInitializer) {
         super(host, port);
         this.channelInitializer = channelInitializer;
     }
@@ -24,7 +23,7 @@ public abstract class AbstractCommonCustomUdpBlockedClient extends BaseUdpClient
         this.bootstrap = new Bootstrap();
 
         ChannelFuture channelFuture = this.bootstrap.group(this.group)
-                .channel(DatagramChannel.class)
+                .channel(NioDatagramChannel.class)
                 .handler(this.channelInitializer)
                 .connect(this.host, this.port)
                 .sync()
