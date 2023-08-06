@@ -1,4 +1,4 @@
-package com.flz.nettystudy.tcpDemo;
+package com.flz.nettystudy.tcp;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
